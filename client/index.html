@@ -25,6 +25,8 @@
   <div class="controls">
     <button id="toggle-direction">Повернуть</button>
     <button id="ready-button">Готово</button>
+    <button id="invite-button">Пригласить друга</button>
+    <button id="auto-button">Авторасстановка</button>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -36,6 +38,17 @@
     const userId = tg.initDataUnsafe?.user?.id || ("guest" + Math.floor(Math.random() * 10000));
     const room = tg.initDataUnsafe?.start_param || userId;
     window.battleshipApp = { userId, room };
+
+    document.getElementById("invite-button").onclick = () => {
+      const link = `https://t.me/${tg.initDataUnsafe?.bot?.username}?startapp=${userId}`;
+      Telegram.WebApp.openTelegramLink(
+        `https://t.me/share/url?url=${encodeURIComponent(link)}&text=Присоединяйся в морской бой!`
+      );
+    };
+
+    document.getElementById("auto-button").onclick = () => {
+      if (typeof autoPlaceShips === "function") autoPlaceShips();
+    };
   </script>
 </body>
 </html>
