@@ -202,3 +202,12 @@ socket.on("fire-result", ({ index, result, nextTurn }) => {
 
 
 window.autoPlaceShips = autoPlaceShips;
+
+
+window.inviteFriend = function() {
+  const tg = window.Telegram.WebApp;
+  const userId = window.battleshipApp?.userId || 'guest';
+  const botName = tg?.initDataUnsafe?.bot?.username || 'your_bot';
+  const link = `https://t.me/${botName}?startapp=${userId}`;
+  Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=Присоединяйся в морской бой!`);
+};
