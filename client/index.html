@@ -1,31 +1,40 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Battleship Game</title>
+  <title>Морской Бой</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Морской Бой</h1>
+
   <div class="board-container">
     <div id="player-board" class="board"></div>
     <div id="opponent-board" class="board"></div>
   </div>
+
   <button id="toggle-direction">Повернуть</button>
   <button id="ready-button">Готово</button>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="script.js"></script>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
-  const tg = window.Telegram.WebApp;
-  tg.expand(); // разворачивает на весь экран
-  tg.ready();  // сообщает Telegram, что Web App загружен
 
-  // Получить Telegram ID игрока:
-  const userId = tg.initDataUnsafe?.user?.id;
-  console.log("Player Telegram ID:", userId);
-</script>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();   // сообщает Telegram, что Web App загружен
+    tg.expand();  // разворачивает на весь экран
+
+    // Проверка данных пользователя
+    if (tg.initDataUnsafe?.user) {
+      console.log("Telegram user ID:", tg.initDataUnsafe.user.id);
+      console.log("Имя:", tg.initDataUnsafe.user.first_name);
+    } else {
+      console.log("Не удалось получить данные пользователя.");
+    }
+  </script>
 </body>
 </html>
