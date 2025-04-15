@@ -154,3 +154,48 @@ function clearAll() {
     cell.classList.remove("ship", "preview");
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const inviteBtn = document.createElement("button");
+  inviteBtn.textContent = "Пригласить друга";
+  inviteBtn.onclick = () => {
+    const link = `https://t.me/${tg.initDataUnsafe?.bot?.username}?startapp=${userId}`;
+    Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=Присоединяйся в морской бой!`);
+  };
+  document.querySelector(".controls")?.appendChild(inviteBtn);
+});
+
+
+let isPlayerTurn = false;
+
+socket.on("start-turn", ({ yourTurn }) => {
+  isPlayerTurn = yourTurn;
+  if (isPlayerTurn) {
+    console.log("Твой ход");
+  } else {
+    console.log("Ход противника");
+  }
+});
+
+opponentBoard.addEventListener("click", e => {
+  if (!isPlayerTurn) return;
+  const index = e.target.dataset.index;
+  if (!index) return;
+  isPlayerTurn = false;
+  socket.emit("fire", { room, index });
+});
+
+socket.on("fire-result", ({ index, result, nextTurn }) => {
+  const cell = opponentBoard.querySelector(`[data-index='${index}']`);
+  if (cell) {
+    if (result === "hit") {
+      cell.classList.add("hit");
+    } else {
+      cell.classList.add("miss");
+      cell.style.backgroundImage = "url('assets/miss.png')";
+      cell.style.backgroundSize = "cover";
+      cell.style.backgroundPosition = "center";
+    }
+  }
+  isPlayerTurn = nextTurn;
+});

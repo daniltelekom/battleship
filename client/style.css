@@ -65,3 +65,11 @@ button {
   color: white;
   width: 120px;
 }
+
+.cell.hit {
+  background-color: transparent;
+  background-image: url('assets/hit-effect.png');
+  background-size: cover;
+  background-position: center;
+  animation: hitFlash 0.5s;
+}

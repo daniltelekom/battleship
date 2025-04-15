@@ -31,6 +31,13 @@ io.on("connection", socket => {
   });
 
   socket.on("ready", ({ userId }) => {
+    socket.data.ready = true;
+    const room = socket.data.room;
+    const playersReady = (players[room] || []).map(id => io.sockets.sockets.get(id)).filter(s => s?.data?.ready);
+    if (playersReady.length === 2) {
+      const turn = Math.floor(Math.random() * 2);
+      playersReady.forEach((s, i) => s.emit("start-turn", { yourTurn: i === turn }));
+    }
     if (!stats[userId]) stats[userId] = { wins: 0, losses: 0 };
     socket.emit("stats-update", stats[userId]);
   });
