@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battleship Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Battleship</h1>
+  <button id="rotate-btn">Повернуть</button>
+  <button id="ready-btn">Готов</button>
+  <div class="game-container">
+    <div id="player-board" class="board"></div>
+    <div id="opponent-board" class="board"></div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="../src/script.js"></script>
+</body>
+</html>
