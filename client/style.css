@@ -15,14 +15,25 @@ body {
 }
 .board {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(10, 36px);
+  grid-template-rows: repeat(10, 36px);
   aspect-ratio: 1 / 1;
   max-width: 90vw;
   border: 2px solid white;
+  margin-bottom: 1rem;
+}
+@media (min-width: 500px) {
+  .board {
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows:  repeat(10, 40px);
+  }
 }
 .cell {
   border: 1px solid white;
   background-color: rgba(255,255,255,0.1);
+  width:36px;
+  height: 36px;
+  box-sizing: border-box;
 }
 .cell.ship {
   background-color: steelblue;
