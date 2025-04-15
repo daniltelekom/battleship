@@ -1,42 +1,62 @@
 
-const express = require('express');
-const http = require('http');
-const socketio = require('socket.io');
-const path = require('path');
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
+const io = new Server(server);
 
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static("client"));
 
-let players = {};
+const players = {};
+const stats = {};
 
-io.on('connection', socket => {
-  console.log('New connection', socket.id);
-  if (Object.keys(players).length < 2) {
-    players[socket.id] = { ready: false };
-  } else {
-    socket.disconnect();
-    return;
-  }
+function recordWin(id) {
+  if (!stats[id]) stats[id] = { wins: 0, losses: 0 };
+  stats[id].wins++;
+}
+function recordLoss(id) {
+  if (!stats[id]) stats[id] = { wins: 0, losses: 0 };
+  stats[id].losses++;
+}
 
-  socket.on('player-ready', () => {
-    players[socket.id].ready = true;
-    const allReady = Object.values(players).every(p => p.ready);
-    if (allReady) {
-      io.emit('start-game');
+io.on("connection", socket => {
+  socket.on("join-room", ({ room, userId }) => {
+    socket.join(room);
+    socket.data.userId = userId;
+    socket.data.room = room;
+    if (!players[room]) players[room] = [];
+    players[room].push(socket.id);
+  });
+
+  socket.on("ready", ({ userId }) => {
+    if (!stats[userId]) stats[userId] = { wins: 0, losses: 0 };
+    socket.emit("stats-update", stats[userId]);
+  });
+
+  socket.on("fire", ({ room, index }) => {
+    io.to(room).emit("fire-result", { index, result: "hit" });
+  });
+
+  socket.on("disconnect", () => {
+    const { room, userId } = socket.data || {};
+    if (room && players[room]) {
+      players[room] = players[room].filter(id => id !== socket.id);
+      if (players[room].length === 1) {
+        const winnerSocket = io.sockets.sockets.get(players[room][0]);
+        const winnerId = winnerSocket?.data?.userId;
+        if (winnerId) {
+          recordWin(winnerId);
+          winnerSocket.emit("stats-update", stats[winnerId]);
+        }
+        if (userId) {
+          recordLoss(userId);
+        }
+      }
     }
-  });
-
-  socket.on('shoot', index => {
-    io.emit('shoot-result', { index, result: 'hit' }); // Заменить на логику попадания
-  });
-
-  socket.on('disconnect', () => {
-    delete players[socket.id];
   });
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log("Server on port", PORT));

@@ -1,84 +1,105 @@
 
 const playerBoard = document.getElementById("player-board");
 const opponentBoard = document.getElementById("opponent-board");
+const statsDiv = document.getElementById("stats");
 const toggleBtn = document.getElementById("toggle-direction");
 const readyBtn = document.getElementById("ready-button");
 
-let direction = 'horizontal';
+let direction = "horizontal";
+let shipsPlaced = 0;
 let playerShips = [];
-let currentShipLength = 4;
+const shipList = [4,3,3,2,2,2,1,1,1,1];
+const { userId, room } = window.battleshipApp || { userId: "guest", room: "room1" };
 
 function createBoard(board) {
   for (let i = 0; i < 100; i++) {
-    const cell = document.createElement('div');
-    cell.classList.add('cell');
+    const cell = document.createElement("div");
+    cell.classList.add("cell");
     cell.dataset.index = i;
     board.appendChild(cell);
   }
 }
-
 createBoard(playerBoard);
 createBoard(opponentBoard);
 
-function isValidPlacement(startIndex, direction, length) {
-  const indexes = [];
-  for (let i = 0; i < length; i++) {
-    let index = direction === 'horizontal' ? startIndex + i : startIndex + i * 10;
-    if (index >= 100 || (direction === 'horizontal' && Math.floor(index / 10) !== Math.floor(startIndex / 10))) return null;
-    const cell = playerBoard.querySelector(`[data-index='${index}']`);
-    if (!cell || cell.classList.contains('ship')) return null;
-    indexes.push(index);
-  }
-  return indexes;
-}
+toggleBtn.onclick = () => {
+  direction = direction === "horizontal" ? "vertical" : "horizontal";
+};
 
-function placeShip(startIndex, length) {
-  const indexes = isValidPlacement(startIndex, direction, length);
-  if (indexes) {
-    indexes.forEach(i => {
-      const cell = playerBoard.querySelector(`[data-index='${i}']`);
-      cell.classList.add('ship');
-      cell.style.backgroundImage = `url('assets/ships/ship-${length}-${direction[0]}.png')`;
-    });
-    playerShips.push(indexes);
-  } else {
-    alert('Нельзя ставить сюда корабль!');
-  }
-}
-
-playerBoard.addEventListener('click', e => {
-  if (playerShips.length >= 10) return;
+playerBoard.addEventListener("click", e => {
+  if (shipsPlaced >= shipList.length) return;
   const index = parseInt(e.target.dataset.index);
-  if (playerShips.length === 0) currentShipLength = 4;
-  else if (playerShips.length < 3) currentShipLength = 3;
-  else if (playerShips.length < 6) currentShipLength = 2;
-  else currentShipLength = 1;
-  placeShip(index, currentShipLength);
+  const length = shipList[shipsPlaced];
+  const coords = getCoords(index, direction, length);
+  if (coords && valid(coords)) {
+    coords.forEach(i => {
+      const cell = playerBoard.querySelector(`[data-index='${i}']`);
+      cell.classList.remove("preview");
+      cell.classList.add("ship");
+    });
+    playerShips.push(coords);
+    shipsPlaced++;
+  }
 });
 
-toggleBtn.onclick = () => {
-  direction = direction === 'horizontal' ? 'vertical' : 'horizontal';
-};
+playerBoard.addEventListener("mouseover", e => {
+  clearPreview();
+  const index = parseInt(e.target.dataset.index);
+  if (shipsPlaced >= shipList.length) return;
+  const length = shipList[shipsPlaced];
+  const coords = getCoords(index, direction, length);
+  if (coords && valid(coords)) {
+    coords.forEach(i => {
+      const cell = playerBoard.querySelector(`[data-index='${i}']`);
+      if (cell && !cell.classList.contains("ship")) cell.classList.add("preview");
+    });
+  }
+});
+
+playerBoard.addEventListener("mouseout", () => clearPreview());
+
+function clearPreview() {
+  document.querySelectorAll(".cell.preview").forEach(cell => cell.classList.remove("preview"));
+}
+
+function getCoords(start, dir, len) {
+  const coords = [];
+  for (let i = 0; i < len; i++) {
+    let idx = dir === "horizontal" ? start + i : start + i * 10;
+    if (idx >= 100 || (dir === "horizontal" && Math.floor(idx / 10) !== Math.floor(start / 10))) return null;
+    coords.push(idx);
+  }
+  return coords;
+}
+
+function valid(coords) {
+  return coords.every(i => {
+    const cell = playerBoard.querySelector(`[data-index='${i}']`);
+    return cell && !cell.classList.contains("ship");
+  });
+}
 
 const socket = io();
+socket.emit("join-room", { room, userId });
+
 readyBtn.onclick = () => {
   if (playerShips.length === 10) {
-    socket.emit('player-ready');
+    socket.emit("ready", { userId });
   } else {
-    alert('Поставь все корабли!');
+    alert("Поставь все корабли!");
   }
 };
 
-opponentBoard.addEventListener('click', (e) => {
-  const index = parseInt(e.target.dataset.index);
-  socket.emit('shoot', index);
+opponentBoard.addEventListener("click", e => {
+  const index = e.target.dataset.index;
+  socket.emit("fire", { room, index });
 });
 
-socket.on('shoot-result', ({ index, result }) => {
+socket.on("fire-result", ({ index, result }) => {
   const cell = opponentBoard.querySelector(`[data-index='${index}']`);
-  if (result === 'hit') {
-    cell.classList.add('hit');
-  } else {
-    cell.classList.add('miss');
-  }
+  cell.classList.add(result === "hit" ? "hit" : "miss");
+});
+
+socket.on("stats-update", ({ wins, losses }) => {
+  statsDiv.textContent = `Побед: ${wins} | Поражений: ${losses}`;
 });
