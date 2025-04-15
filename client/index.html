@@ -17,5 +17,15 @@
   <button id="ready-button">Готово</button>
   <script src="/socket.io/socket.io.js"></script>
   <script src="script.js"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.expand(); // разворачивает на весь экран
+  tg.ready();  // сообщает Telegram, что Web App загружен
+
+  // Получить Telegram ID игрока:
+  const userId = tg.initDataUnsafe?.user?.id;
+  console.log("Player Telegram ID:", userId);
+</script>
 </body>
 </html>
