@@ -199,3 +199,6 @@ socket.on("fire-result", ({ index, result, nextTurn }) => {
   }
   isPlayerTurn = nextTurn;
 });
+
+
+window.autoPlaceShips = autoPlaceShips;

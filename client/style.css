@@ -20,8 +20,8 @@ body {
 }
 .board {
   display: grid;
-  grid-template-columns: repeat(10, 36px);
-  grid-template-rows: repeat(10, 36px);
+  grid-template-columns: repeat(10, 32px);
+  grid-template-rows: repeat(10, 32px);
   border: 2px solid white;
 }
 @media (min-width: 500px) {
@@ -63,7 +63,7 @@ button {
   border-radius: 8px;
   background-color: #3a8;
   color: white;
-  width: 120px;
+  width: 100px;
 }
 
 .cell.hit {
