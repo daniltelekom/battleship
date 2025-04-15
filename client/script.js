@@ -206,8 +206,13 @@ window.autoPlaceShips = autoPlaceShips;
 
 window.inviteFriend = function() {
   const tg = window.Telegram.WebApp;
-  const userId = window.battleshipApp?.userId || 'guest';
-  const botName = "battlesea_ship_bot";
+  const userId = window.battleshipApp?.userId || "guest";
+  const botName = "battlesea_ship_bot"; // замени на имя своего бота
+
   const link = `https://t.me/${botName}?startapp=${userId}`;
-  Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=Присоединяйся в морской бой!`);
+  const message = `Присоединяйся в морской бой!\n${link}`;
+
+  Telegram.WebApp.openTelegramLink(
+    `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Присоединяйся в морской бой!")}`
+  );
 };
