@@ -73,9 +73,25 @@ function getCoords(start, dir, len) {
 }
 
 function valid(coords) {
+  const taken = new Set();
+  for (let i = 0; i < 100; i++) {
+    const cell = playerBoard.querySelector(`[data-index='${i}']`);
+    if (cell && cell.classList.contains("ship")) {
+      taken.add(i);
+      // соседние клетки (в том числе диагонали)
+      const adj = [
+        i - 11, i - 10, i - 9,
+        i - 1,  i,     i + 1,
+        i + 9,  i + 10, i + 11
+      ];
+      adj.forEach(j => {
+        if (j >= 0 && j < 100) taken.add(j);
+      });
+    }
+  }
   return coords.every(i => {
     const cell = playerBoard.querySelector(`[data-index='${i}']`);
-    return cell && !cell.classList.contains("ship");
+    return cell && !taken.has(i);
   });
 }
 
@@ -103,3 +119,38 @@ socket.on("fire-result", ({ index, result }) => {
 socket.on("stats-update", ({ wins, losses }) => {
   statsDiv.textContent = `Побед: ${wins} | Поражений: ${losses}`;
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const autoBtn = document.createElement("button");
+  autoBtn.textContent = "Авторасстановка";
+  autoBtn.onclick = autoPlaceShips;
+  document.querySelector(".controls")?.appendChild(autoBtn);
+});
+
+function autoPlaceShips() {
+  clearAll();
+  shipsPlaced = 0;
+  playerShips = [];
+  const attempts = 1000;
+  for (let a = 0; a < attempts && shipsPlaced < shipList.length; a++) {
+    const len = shipList[shipsPlaced];
+    const dir = Math.random() < 0.5 ? "horizontal" : "vertical";
+    const index = Math.floor(Math.random() * 100);
+    const coords = getCoords(index, dir, len);
+    if (coords && valid(coords)) {
+      coords.forEach(i => {
+        const cell = playerBoard.querySelector(`[data-index='${i}']`);
+        cell.classList.add("ship");
+      });
+      playerShips.push(coords);
+      shipsPlaced++;
+    }
+  }
+}
+
+function clearAll() {
+  document.querySelectorAll(".cell").forEach(cell => {
+    cell.classList.remove("ship", "preview");
+  });
+}

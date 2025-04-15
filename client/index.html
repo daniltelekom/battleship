@@ -10,20 +10,23 @@
 <body>
   <h1>Морской Бой</h1>
   <div id="stats">Побед: 0 | Поражений: 0</div>
+
   <div class="board-container">
     <div>
-      <p>Противник</p>
+      <p class="board-label">Противник</p>
       <div id="opponent-board" class="board"></div>
     </div>
     <div>
-      <p>Ты</p>
+      <p class="board-label">Ты</p>
       <div id="player-board" class="board"></div>
     </div>
   </div>
+
   <div class="controls">
     <button id="toggle-direction">Повернуть</button>
     <button id="ready-button">Готово</button>
   </div>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="script.js"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
