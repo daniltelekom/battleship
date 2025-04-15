@@ -73,3 +73,15 @@ button {
   background-position: center;
   animation: hitFlash 0.5s;
 }
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  gap: 0.6rem;
+}
+.controls button {
+  width: 90px;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.6rem;
+}
