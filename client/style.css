@@ -85,3 +85,8 @@ body {
   height: auto;
   max-height: 80px;
 }
+@media (max-width: 400px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
