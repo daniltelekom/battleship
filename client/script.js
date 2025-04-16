@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function valid(coords) {
     const buffer = getBufferZone(coords);
     return buffer.every(i => {
-      const cell = document.querySelector(`#player-board [data-index='${i}']`);
+      const cell = document.querySelector(#player-board [data-index='${i}']);
       return cell && !cell.classList.contains("ship");
     });
   }
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function isValid(coords) {
       const buffer = getBufferZone(coords);
       return buffer.every(i => {
-        const cell = document.querySelector(`#player-board [data-index='${i}']`);
+        const cell = document.querySelector(#player-board [data-index='${i}']);
         return cell && !cell.classList.contains("ship");
       });
     }
