@@ -27,8 +27,8 @@ body {
 .cell {
   border: 1px solid white;
   background-color: rgba(255,255,255,0.1);
-  width: 100%;
-  height: 100%;
+  width: 32px;
+  height: 32px;
 }
 .cell.ship {
   background-color: steelblue;
@@ -70,11 +70,6 @@ body {
   gap: 1rem;
   margin-top: 1rem;
 }
-.ship-option img {
-  width: auto;
-  height: auto;
-  max-height: 80px;
-}
 .ship-option {
   border: 2px solid transparent;
   cursor: pointer;
@@ -84,6 +79,7 @@ body {
   background-color: rgba(255, 255, 0, 0.2);
 }
 .ship-option img {
-  width: 80px;
+  width: auto;
   height: auto;
+  max-height: 80px;
 }
