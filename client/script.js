@@ -67,11 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-    return coords.every(i => {
-      const cell = document.querySelector(`#player-board [data-index='${i}']`);
-      return cell && !cell.classList.contains("ship");
-    });
-  }
+
 
   playerBoard.addEventListener("click", (e) => {
     const cell = e.target;
