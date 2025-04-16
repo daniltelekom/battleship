@@ -66,10 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-    return coords.every(i => {
-      const cell = document.querySelector(`#player-board [data-index='${i}']`);
-      return cell && !cell.classList.contains("ship");
-    });
+  
   }
 
   const shipLimits = { 4: 1, 3: 2, 2: 3, 1: 4 };
