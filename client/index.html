@@ -46,7 +46,7 @@
     const tg = window.Telegram.WebApp;
     tg.ready(); tg.expand();
     const userId = tg.initDataUnsafe?.user?.id || ("guest" + Math.floor(Math.random() * 10000));
-    const room = tg.initDataUnsafe?.start_param || userId;
+const room = tg.initDataUnsafe?.start_param || userId;
     window.battleshipApp = { userId, room };
   </script>
 </body>
