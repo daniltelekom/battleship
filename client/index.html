@@ -30,12 +30,7 @@
       <button onclick="window.autoPlaceShips()">Авто</button>
     </div>
 
-    <div class="ship-picker" id="ship-picker" style="flex-direction: row; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-      <div class="ship-option" data-length="4"><img src="assets/ships/ship-4-h.png" alt="4"></div>
-      <div class="ship-option" data-length="3"><img src="assets/ships/ship-3-h.png" alt="3"></div>
-      <div class="ship-option" data-length="2"><img src="assets/ships/ship-2-h.png" alt="2"></div>
-      <div class="ship-option" data-length="1"><img src="assets/ships/ship-1-h.png" alt="1"></div>
-    </div>
+    
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -48,5 +43,13 @@
     const room = tg.initDataUnsafe?.start_param || userId;
     window.battleshipApp = { userId, room };
   </script>
+
+  <div class="ship-picker" id="ship-picker" style="flex-direction: row; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+      <div class="ship-option" data-length="4"><img src="assets/ships/ship-4-h.png" alt="4"></div>
+      <div class="ship-option" data-length="3"><img src="assets/ships/ship-3-h.png" alt="3"></div>
+      <div class="ship-option" data-length="2"><img src="assets/ships/ship-2-h.png" alt="2"></div>
+      <div class="ship-option" data-length="1"><img src="assets/ships/ship-1-h.png" alt="1"></div>
+    </div>
+  
 </body>
 </html>
