@@ -1,6 +1,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   const playerBoard = document.getElementById("player-board");
+const opponentBoard = document.getElementById("opponent-board");
 
   function createBoard(board) {
     for (let i = 0; i < 100; i++) {
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   createBoard(playerBoard);
+  createBoard(opponentBoard);
 
   let currentShipLength = 4;
   let direction = "horizontal";
