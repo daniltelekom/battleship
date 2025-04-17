@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const userId = tg?.initDataUnsafe?.user?.id || "guest" + Math.floor(Math.random() * 10000);
       const botName = "battlesea_ship_bot";
       const link = `https://t.me/${botName}?startapp=${userId}`;
-      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Присоединяйся в морской бой!")}`;
+      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('Присоединяйся в морской бой!')}`;
 
       if (tg?.openTelegramLink) {
         tg.openTelegramLink(shareUrl);
