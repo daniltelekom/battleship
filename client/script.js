@@ -139,7 +139,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (placedShips.length !== 10) {
-      alert("Не удалось расставить все корабли. Попробуй снова.");
+      document.getElementById("ready-button").addEventListener("click", () => {
+    if (placedShips.length !== 10) {
+      alert("Нужно разместить все корабли!");
+      return;
+    }
+
+    console.log("Готово: отправка на сервер");
+    socket.emit("place-ready", {
+      room: window.battleshipApp?.room || "default",
+      userId: window.battleshipApp?.userId || "guest"
+    });
+  });
     }
   };
 });
