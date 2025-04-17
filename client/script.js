@@ -1,7 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Telegram WebApp API:", window.Telegram?.WebApp);
-console.log("User ID:", window.Telegram?.WebApp?.initDataUnsafe?.user?.id);
+  const tg = window.Telegram?.WebApp;
+alert("TG WebApp API: " + (tg ? "OK" : "Not available"));
+alert("User ID: " + (tg?.initDataUnsafe?.user?.id || "Нет ID"));
   
   const playerBoard = document.getElementById("player-board");
   const opponentBoard = document.getElementById("opponent-board");
