@@ -168,31 +168,50 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+  // ✅ Touch support for preview on mobile
+  function handlePreviewTouch(e) {
+    const touch = e.touches[0];
+    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!target || !target.classList.contains("cell")) return;
 
-document.getElementById("invite-button").addEventListener("click", () => {
-  const tg = window.Telegram?.WebApp;
-  const botName = "battlesea_ship_bot";
+    previewCoords.forEach(i => {
+      const c = document.querySelector(`#player-board [data-index='${i}']`);
+      if (c && !c.classList.contains("ship")) c.classList.remove("preview");
+    });
 
-  let userId = "guest" + Math.floor(Math.random() * 10000);
-  if (tg?.initDataUnsafe?.user?.id) {
-    userId = tg.initDataUnsafe.user.id;
-    console.log("Telegram user ID:", userId);
-  } else {
-    console.warn("Telegram user ID не найден, используется guest ID");
+    const index = parseInt(target.dataset.index);
+    const coords = getCoords(index, direction, currentShipLength);
+    if (!coords) return;
+    previewCoords = coords;
+    coords.forEach(i => {
+      const c = document.querySelector(`#player-board [data-index='${i}']`);
+      if (c && !c.classList.contains("ship")) c.classList.add("preview");
+    });
   }
 
-  const link = `https://t.me/${botName}?startapp=${userId}`;
-  const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Играй со мной в Морской Бой!")}`;
+  playerBoard.addEventListener("touchstart", handlePreviewTouch);
+  playerBoard.addEventListener("touchmove", handlePreviewTouch);
 
-  if (tg?.openTelegramLink) {
-    try {
-      tg.openTelegramLink(shareUrl);
-    } catch (err) {
-      console.error("Ошибка при openTelegramLink:", err);
-      window.open(shareUrl, "_blank");
-    }
-  } else {
-    console.warn("tg.openTelegramLink недоступен, fallback на window.open");
-    window.open(shareUrl, "_blank");
+  // ✅ Invite button with fallback
+  const inviteBtn = document.getElementById("invite-button");
+  if (inviteBtn) {
+    inviteBtn.addEventListener("click", () => {
+      const tg = window.Telegram?.WebApp;
+      const userId = tg?.initDataUnsafe?.user?.id || "guest" + Math.floor(Math.random() * 10000);
+      const botName = "battlesea_ship_bot";
+      const link = `https://t.me/${botName}?startapp=${userId}`;
+      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Присоединяйся в морской бой!")}`;
+
+      if (tg?.openTelegramLink) {
+        try {
+          tg.openTelegramLink(shareUrl);
+        } catch (err) {
+          console.error("Ошибка openTelegramLink:", err);
+          window.open(shareUrl, "_blank");
+        }
+      } else {
+        window.open(shareUrl, "_blank");
+      }
+    });
   }
 });
