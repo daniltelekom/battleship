@@ -10,7 +10,7 @@ function recordWin(id) { if (!stats[id]) stats[id] = { wins: 0, losses: 0 }; sta
 
 io.on("connection", socket => { console.log("Новый пользователь:", socket.id);
 
-socket.on("join", ({ roomId, userId }) => { socket.join(roomId); socket.data.userId = userId; socket.data.room = roomId; if (!players[roomId]) players[roomId] = []; players[roomId].push(socket.id); console.log(Игрок ${userId} подключён к комнате ${roomId});
+socket.on("join", ({ roomId, userId }) => { socket.join(roomId); socket.data.userId = userId; socket.data.room = roomId; if (!players[roomId]) players[roomId] = []; players[roomId].push(socket.id); console.log(`Игрок ${userId} подключён к комнате ${roomId}`);
 
 if (players[roomId].length === 2) {
   io.to(roomId).emit("start-game");
