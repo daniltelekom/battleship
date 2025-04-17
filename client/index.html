@@ -33,5 +33,12 @@
   </div>
 
   <script src="script.js"></script>
+  <!-- Telegram WebApp support -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.expand();  // Разворачивает WebApp на весь экран
+  tg.ready();   // Сообщает Telegram, что WebApp готов
+</script>
 </body>
 </html>
