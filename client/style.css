@@ -33,9 +33,7 @@ body {
   width: 32px;
   height: 32px;
 }
-.cell.ship {
-  background-color: steelblue;
-}
+
 .cell.hit {
   background-color: red;
 }
