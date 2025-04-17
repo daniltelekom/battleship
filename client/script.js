@@ -18,7 +18,17 @@ document.addEventListener("DOMContentLoaded", () => {
   createBoard(opponentBoard);
 
   document.getElementById("invite-button").addEventListener("click", () => {
-  alert("Кнопка пригласить сработала");
+  const tg = window.Telegram?.WebApp;
+const userId = tg?.initDataUnsafe?.user?.id || "guest" + Math.floor(Math.random() * 10000);
+const botName = "battlesea_ship_bot"; // замени на имя своего бота
+const link = https://t.me/${botName}?startapp=${userId};
+const shareUrl = https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Присоединяйся в морской бой!")};
+
+if (tg?.openTelegramLink) {
+  tg.openTelegramLink(shareUrl);
+} else {
+  window.open(shareUrl, "_blank");
+}
 });
 
   let currentShipLength = 4;
