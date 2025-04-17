@@ -1,8 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-  const tg = window.Telegram?.WebApp;
-alert("TG WebApp API: " + (tg ? "OK" : "Not available"));
-alert("User ID: " + (tg?.initDataUnsafe?.user?.id || "Нет ID"));
+
   
   const playerBoard = document.getElementById("player-board");
   const opponentBoard = document.getElementById("opponent-board");
@@ -18,6 +16,10 @@ alert("User ID: " + (tg?.initDataUnsafe?.user?.id || "Нет ID"));
 
   createBoard(playerBoard);
   createBoard(opponentBoard);
+
+  document.getElementById("invite-button").addEventListener("click", () => {
+  alert("Кнопка пригласить сработала");
+});
 
   let currentShipLength = 4;
   let direction = "horizontal";
