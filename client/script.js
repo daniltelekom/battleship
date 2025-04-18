@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   createBoard(playerBoard);
   createBoard(opponentBoard);
 
-  dokument.getElementByld("invite-button").addEventListener("click",()=>window.inviteFriend());
+  document.getElementByld("invite-button").addEventListener("click",()=>window.inviteFriend());
 
   let currentShipLength = 4;
   let direction = "horizontal";
