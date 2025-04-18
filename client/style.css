@@ -42,3 +42,135 @@ body {
   padding: 0.4rem 0.8rem;
   font-size: 0.9rem;
 }
+.ship-picker {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.ship-option {
+   border: 2px solid transparent;
+  padding: 6px;
+  cursor: pointer;
+  background-color: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: auto;
+}
+.ship-option.selected {
+  border-color: yellow;
+  background-color: rgba(255, 255, 0, 0.1);
+}
+.ship-option img {
+  max-height: 64px;
+  max-width: 100%;
+  object-fit: contain;
+  image-rendering: auto;
+  display: block;
+}
+.cell.ship-1-h-0 {
+  background-image: url("assets/ships/ship-1-h-0.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-1-v-0 {
+  background-image: url("assets/ships/ship-1-v-0.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-2-h-0 {
+  background-image: url("assets/ships/ship-2-h-0.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-2-h-1 {
+  background-image: url("assets/ships/ship-2-h-1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-2-v-0 {
+  background-image: url("assets/ships/ship-2-v-0.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-2-v-1 {
+  background-image: url("assets/ships/ship-2-v-1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-3-h-0 {
+  background-image: url("assets/ships/ship-3-h-0.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-3-h-1 {
+  background-image: url("assets/ships/ship-3-h-1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-3-h-2 {
+  background-image: url("assets/ships/ship-3-h-2.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-3-v-0 {
+  background-image: url("assets/ships/ship-3-v-0.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-3-v-1 {
+  background-image: url("assets/ships/ship-3-v-1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-3-v-2 {
+  background-image: url("assets/ships/ship-3-v-2.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-4-h-0 {
+  background-image: url("assets/ships/ship-4-h-0.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-4-h-1 {
+  background-image: url("assets/ships/ship-4-h-1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-4-h-2 {
+  background-image: url("assets/ships/ship-4-h-2.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-4-h-3 {
+  background-image: url("assets/ships/ship-4-h-3.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-4-v-0 {
+  background-image: url("assets/ships/ship-4-v-0.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-4-v-1 {
+  background-image: url("assets/ships/ship-4-v-1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-4-v-2 {
+  background-image: url("assets/ships/ship-4-v-2.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.ship-4-v-3 {
+  background-image: url("assets/ships/ship-4-v-3.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cell.preview {
+   background-color: rgba(0, 200, 255, 0.4);
+}
