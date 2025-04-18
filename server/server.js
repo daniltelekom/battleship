@@ -5,7 +5,12 @@ const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "https://battleship-coral.vercel.app/",
+    methods: ["GET", "POST"]
+  }
+});
 
 app.use(express.static("client"));
 
