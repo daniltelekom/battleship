@@ -155,4 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
       userId: window.battleshipApp?.userId || "guest"
     });
   });
+  socket.on("start-turn",({yourTurn}) => { console.log("Начало игры", yourTurn ? "Твой ход" : "Ждем соперника" );
+                                          alert(yourTurn ? "Твой ход" : "Ждем соперника" );
+                                         });
 });
