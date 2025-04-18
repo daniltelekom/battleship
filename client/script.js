@@ -1,5 +1,15 @@
 
 const socket = io("https://battleship-server-hio2.onrender.com"); 
+socket.on("connect", () => {
+  console.log("Подключен к серверу, сокет:", socket.id);
+
+  socket.emit("join", {
+    roomId: window.battleshipApp?.room || "default",
+    userId: window.battleshipApp?.userId || "guest"
+  });
+
+  console.log("Отправлен запрос на подключение к комнате:", window.battleshipApp?.room);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const playerBoard = document.getElementById("player-board");
