@@ -1,21 +1,14 @@
 
-const socket = io("https://battleship-server-hio2.onrender.com"); 
-socket.on("connect", () => {
-  console.log("Подключен к серверу, сокет:", socket.id);
-
-  socket.emit("join", {
-    roomId: window.battleshipApp?.room || "default",
-    userId: window.battleshipApp?.userId || "guest"
-  });
-
-  console.log("Отправлен запрос на подключение к комнате:", window.battleshipApp?.room);
-});
+const socket = io("https://battleship-server-hio2.onrender.com");
 
 document.addEventListener("DOMContentLoaded", () => {
   const playerBoard = document.getElementById("player-board");
   const opponentBoard = document.getElementById("opponent-board");
 
   const tg = window.Telegram?.WebApp;
+  tg?.expand();
+  tg?.ready();
+
   const userId = tg?.initDataUnsafe?.user?.id || "guest" + Math.floor(Math.random() * 10000);
   const room = tg?.initDataUnsafe?.start_param || userId;
   window.battleshipApp = { userId, room };
@@ -23,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.emit("join", { roomId: room, userId });
 
   function createBoard(board) {
+    board.innerHTML = "";
     for (let i = 0; i < 100; i++) {
       const cell = document.createElement("div");
       cell.classList.add("cell");
@@ -34,13 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
   createBoard(playerBoard);
   createBoard(opponentBoard);
 
-  document.getElementById("invite-button").addEventListener("click", () => {
-    const link = `https://t.me/battlesea_ship_bot?startapp=${userId}`;
-    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Присоединяйся в морской бой!")}`;
-    if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
-    else window.open(shareUrl, "_blank");
-  });
-
   let currentShipLength = 4;
   let direction = "horizontal";
   const placedShips = [];
@@ -49,10 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("toggle-direction").onclick = () => {
     direction = direction === "horizontal" ? "vertical" : "horizontal";
-    for (let i = 1; i <= 4; i++) {
-      const icon = document.getElementById("icon-" + i);
-      if (icon) icon.src = "assets/icons/ship-" + i + "-" + direction[0] + ".png";
-    }
   };
 
   document.querySelectorAll(".ship-option").forEach(opt => {
@@ -94,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function valid(coords) {
     const buffer = getBufferZone(coords);
     return buffer.every(i => {
-      const cell = document.querySelector(`#player-board [data-index='${i}']`);
+      const cell = playerBoard.querySelector(`[data-index='${i}']`);
       return cell && !cell.classList.contains("ship");
     });
   }
@@ -113,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     coords.forEach((i, idx) => {
-      const c = document.querySelector(`#player-board [data-index='${i}']`);
+      const c = playerBoard.querySelector(`[data-index='${i}']`);
       c.classList.add("ship");
       c.classList.add(`ship-${currentShipLength}-${direction[0]}-${idx}`);
     });
@@ -126,25 +109,30 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".cell.ship").forEach(c => c.className = "cell");
     Object.keys(placedMap).forEach(k => placedMap[k] = 0);
     placedShips.length = 0;
+
     const shipList = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
     for (const len of shipList) {
-      let placed = false;
-      for (let i = 0; i < 100 && !placed; i++) {
+      let placedOne = false;
+      for (let attempt = 0; attempt < 100 && !placedOne; attempt++) {
         const dir = Math.random() < 0.5 ? "horizontal" : "vertical";
         const start = Math.floor(Math.random() * 100);
         const coords = getCoords(start, dir, len);
         if (coords && valid(coords)) {
           coords.forEach((i, idx) => {
-            const c = document.querySelector(`#player-board [data-index='${i}']`);
+            const c = playerBoard.querySelector(`[data-index='${i}']`);
             c.classList.add("ship");
             c.classList.add(`ship-${len}-${dir[0]}-${idx}`);
           });
           placedMap[len]++;
           placedShips.push(coords);
-          placed = true;
+          placedOne = true;
         }
       }
+    }
+
+    if (placedShips.length !== 10) {
+      alert("Не удалось расставить все корабли. Попробуй снова.");
     }
   };
 
@@ -153,8 +141,22 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Нужно разместить все корабли!");
       return;
     }
-     socket.emit("place-ready", { room: window.battleshipApp?.room || "default",
-                                 userId: window.battleshipApp?.userId || "guest"
-                                }):
-  }):
-   
+
+    socket.emit("place-ready", {
+      room: window.battleshipApp?.room || "default",
+      userId: window.battleshipApp?.userId || "guest"
+    });
+  });
+
+  window.inviteFriend = function () {
+    const botName = "battlesea_ship_bot";
+    const link = `https://t.me/${botName}?startapp=${userId}`;
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Присоединяйся в Морской Бой!")}`;
+
+    if (tg?.openTelegramLink) {
+      tg.openTelegramLink(shareUrl);
+    } else {
+      window.open(shareUrl, "_blank");
+    }
+  };
+});
