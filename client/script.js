@@ -153,7 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Нужно разместить все корабли!");
       return;
     }
-    console.log("Готово: отправка на сервер");
-    socket.emit("place-ready", { room, userId });
-  });
-});
+     socket.emit("place-ready", { room: window.battleshipApp?.room || "default",
+                                 userId: window.battleshipApp?.userId || "guest"
+                                }):
+  }):
+   
