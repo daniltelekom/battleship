@@ -1,6 +1,5 @@
 {
   "name": "battleship-server",
-  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
