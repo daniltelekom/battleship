@@ -25,10 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("toggle-direction").onclick = () => {
     direction = direction === "horizontal" ? "vertical" : "horizontal";
-    for (let i = 1; i <= 4; i++) {
-      const icon = document.getElementById("icon-" + i);
-      if (icon) icon.src = "assets/icons/ship-" + i + "-" + direction[0] + ".png";
-    }
+    
   };
 
   document.querySelectorAll(".ship-option").forEach(opt => {
