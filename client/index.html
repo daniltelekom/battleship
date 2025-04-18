@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Морской Бой</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Морской Бой</h1>
+  <div id="stats">Побед: 0 | Поражений: 0</div>
+  <div class="board-label">Противник</div>
+  <div id="opponent-board" class="board"></div>
+  <div class="board-label">Ты</div>
+  <div id="player-board" class="board"></div>
+  <div class="controls">
+    <button id="toggle-direction">Повернуть</button>
+    <button id="auto-button">Авто</button>
+    <button id="ready-button">Готово</button>
+    <button id="invite-button">Пригласить</button>
+  </div>
+  <div class="ship-picker">
+    <div class="ship-option" data-length="4"><img id="icon-4" src="assets/icons/ship-4-h.png" /></div>
+    <div class="ship-option" data-length="3"><img id="icon-3" src="assets/icons/ship-3-h.png" /></div>
+    <div class="ship-option" data-length="2"><img id="icon-2" src="assets/icons/ship-2-h.png" /></div>
+    <div class="ship-option" data-length="1"><img id="icon-1" src="assets/icons/ship-1-h.png" /></div>
+  </div>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.ready();
+    const userId = tg.initDataUnsafe?.user?.id || "guest" + Math.floor(Math.random() * 10000);
+    const room = tg.initDataUnsafe?.start_param || userId;
+    window.battleshipApp = { userId, room };
+  </script>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
