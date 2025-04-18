@@ -1,7 +1,5 @@
 
-const socket = io("https://battleship-server-hio2.onrender.com"); {
-  transports: ["websocket"]
-});
+const socket = io("https://battleship-server-hio2.onrender.com"); 
 
 document.addEventListener("DOMContentLoaded", () => {
   const playerBoard = document.getElementById("player-board");
